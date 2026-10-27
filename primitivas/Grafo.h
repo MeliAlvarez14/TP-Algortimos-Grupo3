@@ -13,7 +13,7 @@ private:
     int cantidadVertices;
 
 public:
-    Grafo(int capacidadInicial = 101) 
+    Grafo(int capacidadInicial) 
         : tablaVertices(capacidadInicial), cantidadVertices(0) {}
 
     void agregarVertice(T codigo, T datoVertice) {
