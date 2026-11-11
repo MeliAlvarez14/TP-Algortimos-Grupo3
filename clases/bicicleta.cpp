@@ -28,15 +28,15 @@ int Bicicleta::obtenerKilometros(){
     return this->kilometros;
 }
 
-void Bicicileta::cambiarEstacion(std::string nuevaEstacion){
+void Bicileta::cambiarEstacion(std::string nuevaEstacion){
     this->codigoEstacion = nuevaEstacion;
 }
 
-void Bicicileta::cambiarEstado(std::string nuevoEstado){
+void Bicileta::cambiarEstado(std::string nuevoEstado){
     this->estado = nuevoEstado;
 }
 
-void Bicicileta::sumarKilometros(int km){
+void Bicileta::sumarKilometros(int km){
     this->kilometros += km;
 }
 
