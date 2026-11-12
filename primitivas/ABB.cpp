@@ -2,13 +2,15 @@
 #include "Bicicleta.h"
 #include <iostream>
 #include <algorithm>
+using namespace std;
+
 
 ABB::ABB() {
-    this->raiz = nullptr;
+    raiz = nullptr;
 }
 
 void ABB::insertar(int clave, Bicicleta* bici){
-    this->raiz = insertarRecursivo(this->raiz, clave, bici);
+    raiz = insertarRecursivo(raiz, clave, bici);
 }
 
 NodoArbol* ABB::insertarRecursivo(NodoArbol* nodo, int clave, Bicicleta* bici){
@@ -24,7 +26,7 @@ NodoArbol* ABB::insertarRecursivo(NodoArbol* nodo, int clave, Bicicleta* bici){
 }
 
 Bicicleta* ABB::buscar(int clave) {
-    return buscarRecursivo(this->raiz, clave);
+    return buscarRecursivo(raiz, clave);
 }
 
 Bicicleta* ABB::buscarRecursivo(NodoArbol* nodo, int clave) {
@@ -38,19 +40,19 @@ Bicicleta* ABB::buscarRecursivo(NodoArbol* nodo, int clave) {
 }
 
 void ABB::listarInOrder() {
-    inOrderRecursivo(this->raiz);
+    inOrderRecursivo(raiz);
 }
 
 void ABB::inOrderRecursivo(NodoArbol* nodo) {
     if (nodo != nullptr) {
         inOrderRecursivo(nodo->obtenerIzquierdo()); // 1. Recorrer subarbol izquierdo
-        // 2. Procesar el nodo actual
+        cout << "Clave: " << nodo->obtenerClave() << ", Bicicleta: " << nodo->obtenerBicicleta()->obtenerId() << endl; // 2. Procesar el nodo actual
         inOrderRecursivo(nodo->obtenerDerecho());   // 3. Recorrer subarbol derecho
     }
 }
 
 int ABB::contarAveriadas() {
-    return contarAveriadasRecursivo(this->raiz);
+    return contarAveriadasRecursivo(raiz);
 }
 
 int ABB::contarAveriadasRecursivo(NodoArbol* nodo) {
@@ -71,14 +73,14 @@ int ABB::contarAveriadasRecursivo(NodoArbol* nodo) {
 }
 
 int ABB::obtenerAltura() {
-    return calcularAlturaRecursivo(this->raiz);
+    return calcularAlturaRecursivo(raiz);
 }
 
 int ABB::calcularAlturaRecursivo(NodoArbol* nodo) {
     if (nodo == nullptr) return -1;
     int altIzq = calcularAlturaRecursivo(nodo->obtenerIzquierdo());
     int altDer = calcularAlturaRecursivo(nodo->obtenerDerecho());
-    return 1 + std::max(altIzq, altDer);
+    return 1 + max(altIzq, altDer);
 }
 
 void ABB::liberarRecursivo(NodoArbol* nodo) {
@@ -90,12 +92,12 @@ void ABB::liberarRecursivo(NodoArbol* nodo) {
 }
 
 ABB::~ABB() {
-    liberarRecursivo(this->raiz); // Destruccion del arbol al finalizar
+    liberarRecursivo(raiz); // Destruccion del arbol al finalizar
 }
 
 // punto extra, eliminar una bicicleta del ABB:
 void ABB::eliminar(int clave) {
-    this->raiz = eliminarRecursivo(this->raiz, clave);
+    raiz = eliminarRecursivo(raiz, clave);
 }
 
 NodoArbol* ABB::obtenerMinimo(NodoArbol* nodo) {
@@ -142,7 +144,6 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
         }
 
         // --- CASO 3: Nodo con DOS HIJOS ---
-        // --- CASO 3: Nodo con DOS HIJOS ---
         else {
             NodoArbol* sucesor = obtenerMinimo(nodo->obtenerDerecho());
 
@@ -153,8 +154,8 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
             sucesor->cambiarIzquierdo(nodo->obtenerIzquierdo());
             sucesor->cambiarDerecho(nuevoDerecho);
 
-            delete nodo; // Liberamos el nodo que queríamos eliminar
-            return sucesor; // El sucesor toma la posición del nodo borrado
+            delete nodo;
+            return sucesor;
         }
     }
     return nodo;

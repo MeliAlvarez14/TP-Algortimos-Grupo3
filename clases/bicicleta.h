@@ -2,6 +2,7 @@
 #define BICICLETA_H_INCLUDED
 
 #include <string>
+using namespace std;
 
 class Bicicleta {
 private:

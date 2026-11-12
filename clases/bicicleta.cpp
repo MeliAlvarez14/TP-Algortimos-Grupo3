@@ -1,43 +1,44 @@
-#include "ABB.h"
+#include "Bicicleta.h"
 #include <iostream>
+using namespace std;
 
-Bicicleta::Bicicleta(int id, std::string estacion, std::string tipo, std::string estado, int km){
-    this->biciId = id;
-    this->codigoEstacion = estacion;
-    this->estado = estado;
-    this->kilometros = km;
+Bicicleta::Bicicleta(int id, string estacion, string tipo, string estado, int km){
+    biciId = id;
+    codigoEstacion = estacion;
+    estado = estado;
+    kilometros = km;
 }
 
 int Bicicleta::obtenerId(){
-    return this->biciId;
+    return biciId;
 }
 
 string Bicicleta::obtenerEstacion(){
-    return this->codigoEstacion;
+    return codigoEstacion;
 }
 
 string Bicicleta::obtenerTipo(){
-    return this->tipo;
+    return tipo;
 }
 
 string Bicicleta::obtenerEstado(){
-    return this->estado;
+    return estado;
 }
 
 int Bicicleta::obtenerKilometros(){
-    return this->kilometros;
+    return kilometros;
 }
 
-void Bicileta::cambiarEstacion(std::string nuevaEstacion){
-    this->codigoEstacion = nuevaEstacion;
+void Bicicleta::cambiarEstacion(string nuevaEstacion){
+    codigoEstacion = nuevaEstacion;
 }
 
-void Bicileta::cambiarEstado(std::string nuevoEstado){
-    this->estado = nuevoEstado;
+void Bicicleta::cambiarEstado(string nuevoEstado){
+    estado = nuevoEstado;
 }
 
-void Bicileta::sumarKilometros(int km){
-    this->kilometros += km;
+void Bicicleta::sumarKilometros(int km){
+    kilometros += km;
 }
 
 
