@@ -24,6 +24,7 @@ public:
     void cambiarEstacion(string nuevaEstacion);
     void cambiarEstado(string nuevoEstado);
     void sumarKilometros(int km);
+    void mostrarDatos();
 };
 
 #endif

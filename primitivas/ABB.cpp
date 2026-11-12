@@ -46,7 +46,7 @@ void ABB::listarInOrder() {
 void ABB::inOrderRecursivo(NodoArbol* nodo) {
     if (nodo != nullptr) {
         inOrderRecursivo(nodo->obtenerIzquierdo()); // 1. Recorrer subarbol izquierdo
-        cout << "Clave: " << nodo->obtenerClave() << ", Bicicleta: " << nodo->obtenerBicicleta()->obtenerId() << endl; // 2. Procesar el nodo actual
+        cout << "Clave: " << nodo->obtenerClave() << ", Bicicleta: "; nodo->obtenerBicicleta()->mostrarDatos(); cout << endl; // 2. Procesar el nodo actual
         inOrderRecursivo(nodo->obtenerDerecho());   // 3. Recorrer subarbol derecho
     }
 }
@@ -87,6 +87,7 @@ void ABB::liberarRecursivo(NodoArbol* nodo) {
     if (nodo != nullptr) {
         liberarRecursivo(nodo->obtenerIzquierdo()); // 1. Liberar subarbol izquierdo
         liberarRecursivo(nodo->obtenerDerecho());   // 2. Liberar subarbol derecho
+        delete nodo->obtenerBicicleta();            // Liberar la bicicleta asociada al nodo
         delete nodo;                               // 3. Borrar la raiz (Postorder)
     }
 }

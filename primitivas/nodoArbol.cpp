@@ -1,8 +1,8 @@
 #include "NodoArbol.h"
 #include "Bicicleta.h"
 
-NodoArbol::NodoArbol(int clave, Bicicleta* bici){
-    clave = clave;
+NodoArbol::NodoArbol(int claveNodo, Bicicleta* bici){
+    clave = claveNodo;
     bicicleta = bici;
     izquierdo = nullptr;
     derecho = nullptr;

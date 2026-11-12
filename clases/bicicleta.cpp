@@ -1,11 +1,12 @@
-#include "Bicicleta.h"
 #include <iostream>
+#include "bicicleta.h"
 using namespace std;
 
-Bicicleta::Bicicleta(int id, string estacion, string tipo, string estado, int km){
+Bicicleta::Bicicleta(int id, string estacion, string tipoBici, string estadoBici, int km){
     biciId = id;
     codigoEstacion = estacion;
-    estado = estado;
+    tipo = tipoBici;
+    estado = estadoBici;
     kilometros = km;
 }
 
@@ -41,6 +42,13 @@ void Bicicleta::sumarKilometros(int km){
     kilometros += km;
 }
 
+void Bicicleta::mostrarDatos() {
+    cout << "ID: " << biciId
+         << " | Estacion: " << codigoEstacion
+         << " | Tipo: " << tipo
+         << " | Estado: " << estado
+         << " | Kilometros: " << kilometros << " km" << endl;
+}
 
 
 
