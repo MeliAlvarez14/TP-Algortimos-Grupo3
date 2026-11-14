@@ -1,8 +1,9 @@
 #include "Estacion.h"
+#include <iostream>
 #include <sstream>
 
 // Constructor (la cola se inicializa sola llamando a su propio constructor por defecto)
-Estacion::Estacion(std::string codigo, std::string nombre, std::string barrio, int capacidadAnclajes, int bicisDisponibles)
+Estacion::Estacion(std::string codigo, std::string nombre, std::string barrio, int capacidadAnclajes = 0, int bicisDisponibles = 0)
     : codigo(codigo), nombre(nombre), barrio(barrio), capacidadAnclajes(capacidadAnclajes), bicisDisponibles(bicisDisponibles) {}
 
 // Getters y Setters

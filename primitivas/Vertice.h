@@ -12,10 +12,7 @@ private:
 
 public:
 
-    Vertice(T d) {
-        dato = d;
-        primero = nullptr;
-    }
+    Vertice(T d) : dato(d), primero(nullptr){}
 
     ~Vertice() {
         Nodo<S>* actual = primero;
@@ -26,6 +23,9 @@ public:
         }
     }
 
+    T& obtenerDato() {
+    return dato;
+}
     T obtenerDato() const {
         return dato;
     }

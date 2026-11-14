@@ -4,31 +4,33 @@
 #include "Vertice.h"
 #include "TablaHash.h" 
 #include "Cola.h" 
+#include <iostream>
+using namespace std;
 
 template <typename T, typename S>
 class Grafo {
 
 private:
-    TablaHash<T, Vertice<T, S>> tablaVertices;
+    TablaHash<T, Vertice<S, T>> tablaVertices;
     int cantidadVertices;
 
 public:
     Grafo(int capacidadInicial) 
         : tablaVertices(capacidadInicial), cantidadVertices(0) {}
 
-    void agregarVertice(T codigo, T datoVertice) {
+    void agregarVertice(T codigo, S datoVertice) {
         if (tablaVertices.buscarClave(codigo) != nullptr) {
             return;
         }
 
-        Vertice<T, S> nuevoVertice(datoVertice);
+        Vertice<S, T> nuevoVertice(datoVertice);
         tablaVertices.insertarClave(codigo, nuevoVertice);
         cantidadVertices++;
     }
 
-    void agregarArista(T origen, S destino) {
-        Vertice<T, S>* vOrigen = tablaVertices.buscarClave(origen);
-        Vertice<T, S>* vDestino = tablaVertices.buscarClave(destino); 
+    void agregarArista(T origen, T destino) {
+        Vertice<S, T>* vOrigen = tablaVertices.buscarClave(origen);
+        Vertice<S, T>* vDestino = tablaVertices.buscarClave(destino); 
 
         if (vOrigen != nullptr && vDestino != nullptr) {
             vOrigen->agregarArista(destino);
@@ -36,7 +38,7 @@ public:
         }
     }
 
-    Vertice<T, S>* obtenerVertice(T clave) {
+    Vertice<S, T>* obtenerVertice(string clave) {
         return tablaVertices.buscarClave(clave);
     }
 
@@ -44,16 +46,16 @@ public:
         return cantidadVertices;
     }
 
-    void eliminarVertice(T claveVertice){
-        Vertice<T, S>* verticeAEliminar = tablaVertices.buscarClave(claveVertice);
+    void eliminarVertice(string claveVertice){
+        Vertice<S, T>* verticeAEliminar = tablaVertices.buscarClave(claveVertice);
 
         if(verticeAEliminar == nullptr){
             return;
         }
 
-        Nodo<S>* actual = verticeAEliminar.obtenerPrimero();
+        Nodo<T>* actual = verticeAEliminar->obtenerPrimero();
         while(actual != nullptr){
-            Vertice<T, S>* verticeVecino = tablaVertices.buscarClave(actual->obtenerDato());
+            Vertice<S, T>* verticeVecino = tablaVertices.buscarClave(actual->obtenerDato());
             verticeVecino->eliminarArista(claveVertice);
             actual = actual->obtenerSiguiente();
         }
@@ -63,8 +65,8 @@ public:
     }
 
     void bfs(T origen, T destino) {
-        Vertice<T, S>* vOrigen = tablaVertices.buscarClave(origen);
-        Vertice<T, S>* vDestino = tablaVertices.buscarClave(destino);
+        Vertice<S, T>* vOrigen = tablaVertices.buscarClave(origen);
+        Vertice<S, T>* vDestino = tablaVertices.buscarClave(destino);
 
         if (vOrigen == nullptr || vDestino == nullptr) {
             return; 
@@ -81,13 +83,12 @@ public:
 
         while (!cola.vacia()) {
             T actualClave = cola.desencolar();
-
             if (actualClave == destino) {
                 encontrado = true;
                 break;
             }
 
-            Vertice<T, S>* vActual = tablaVertices.buscarClave(actualClave);
+            Vertice<S, T>* vActual = tablaVertices.buscarClave(actualClave);
             if (vActual != nullptr) {
                 Nodo<T>* vecinoNodo = vActual->obtenerPrimero();
                 
@@ -106,10 +107,13 @@ public:
         }
 
         if (encontrado) {
+            Nodo<T>* pilaCamino = nullptr; 
             T actual = destino;
-        
+            
             while (actual != origen) {
-                std::cout << actual << " <- "; 
+                Nodo<T>* nuevoNodo = new Nodo<T>(actual);
+                nuevoNodo->cambiarSiguiente(pilaCamino);
+                pilaCamino = nuevoNodo;
 
                 T* predecesor = predecesores.buscarClave(actual);
                 if (predecesor == nullptr) {
@@ -117,10 +121,28 @@ public:
                 }
                 actual = *predecesor;
             }
+            
+            Nodo<T>* nodoOrigen = new Nodo<T>(origen);
+            nodoOrigen->cambiarSiguiente(pilaCamino);
+            pilaCamino = nodoOrigen;
 
-            std::cout << origen << std::endl;
+            Nodo<T>* actualNodo = pilaCamino;
+            while (actualNodo != nullptr) {
+                cout << actualNodo->obtenerDato();
+                if (actualNodo->obtenerSiguiente() != nullptr) {
+                    cout << " -> ";
+                }
+                actualNodo = actualNodo->obtenerSiguiente();
+            }
+
+            while (pilaCamino != nullptr) {
+                Nodo<T>* temp = pilaCamino;
+                pilaCamino = pilaCamino->obtenerSiguiente();
+                delete temp;
+            }
+
         } else {
-            std::cout << "No existe recorrido posible entre " << origen << " y " << destino << "." << std::endl;
+            cout << "No existe recorrido posible entre " << origen << " y " << destino << "." << endl;
         }
     }
 };

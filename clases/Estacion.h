@@ -2,7 +2,7 @@
 #define ESTACION_H
 
 #include <string>
-#include "primitivas/Cola.h"
+#include "../primitivas/Cola.h"
 
 class Estacion {
 private:
