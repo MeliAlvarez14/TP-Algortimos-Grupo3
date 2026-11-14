@@ -4,6 +4,80 @@
 
 using namespace std;
 
+void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
+    int opcion;
+    do {
+        cout << "\n=== MODULO A: GESTIÓN DE ESTACIONES ===" << endl;
+        cout << "1. Mostrar información de una estación por su código" << endl;
+        cout << "2. Agregar una estación nueva al sistema" << endl;
+        cout << "3. Eliminar una estación" << endl;
+        cout << "4. Listar estaciones ordenadas por capacidad de anclajes" << endl;
+        cout << "5. Listar estaciones ordenadas por bicicletas disponibles" << endl;
+        cout << "6. Listar estaciones con menos del 20% de ocupación" << endl;
+        cout << "7. Calcular recorrido por ciclovías" << endl;
+        cout << "0. Volver al menu principal" << endl;
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                string codigo;
+                cout << "Código de estación: ";
+                cin >> codigo;
+                sistema.informacionDeEstacion(codigo);
+                break;
+            }
+            case 2: {
+                string codigo, nombre, barrio;
+                int capacidadAnclajes, bicisDisponibles;
+                cout << "Código de estación: ";
+                cin >> codigo;
+                cout << "Nombre de estacion: ";
+                cin >> nombre;
+                cout << "Barrio donde se encuentra la estación: ";
+                cin >> barrio;
+                cout << "Capacidad de anclaje: ";
+                cin >> capacidadAnclajes;
+                cout << "Cantidad de bicicletas disponibles: ";
+                cin >> bicisDisponibles;
+                sistema.agregarEstacion(codigo, nombre, barrio, capacidadAnclajes, bicisDisponibles);
+                break;
+            }
+            case 3: {
+                string codigo;
+                cout << "Ingrese el código de la estación a eliminar: ";
+                cin >> codigo;
+                sistema.eliminarEstacion(codigo);
+                break;
+            }
+            case 4: {
+                sistema.listarEstacionesPorCapacidadDeAnclaje();
+                break;
+            }
+            case 5: {
+                sistema.listarEstacionesPorBicicletasDisponibles();
+                break;
+            }
+            case 6: {
+                sistema.listarEstacionesConMenosOcupacion();
+                break;
+            }
+            case 7: {
+                string estOrigen, estDestino;
+                cout << "Ingrese el código de la estación origen: ";
+                cin >> estOrigen;
+                cout << "Ingrese el código de la estación destino: ";
+                cin >> estDestino;
+                sistema.menorRecorridoPorCiclovia(estOrigen, estDestino);
+            }
+            case 0:
+                break;
+            default:
+                cout << "Opcion invalida." << endl;
+        }
+    } while (opcion != 0);
+}
+
 void mostrarMenuBicicletas(SistemaBicicletas& sistema) {
     int opcion;
     do {
@@ -124,7 +198,7 @@ void mostrarMenuViajes(SistemaBicicletas& sistema) {
                 cin >> estacion;
                 
                 // Buscamos la bici en el arbol para pasarla por referencia/puntero
-                Bicicleta* bici = sistema.bucarBicicletaPorId(idBici);
+                Bicicleta* bici = sistema.buscarBicicletaPorId(idBici);
                 if (bici != nullptr) {
                     sistema.devolverBicicleta(bici, estacion);
                 } else {
@@ -159,7 +233,7 @@ int main() {
 
         switch (opcionPrincipal) {
             case 1:
-                cout << "[Pendiente de integracion - Modulo A]" << endl;
+                mostrarMenuEstaciones(sistema);
                 break;
             case 2:
                 mostrarMenuViajes(sistema);
