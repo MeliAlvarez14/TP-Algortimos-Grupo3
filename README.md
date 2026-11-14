@@ -13,7 +13,7 @@ cd sistema
 
 2. Compilar el proyecto (sin warnings, bajo el estándar C++17):
 ```bash
-g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicletas.cpp ../primitivas/ABB.cpp ../primitivas/nodoArbol.cpp ../clases/bicicleta.cpp -o sistema_bicis
+g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicletas.cpp ../primitivas/ABB.cpp ../primitivas/NodoArbol.cpp ../clases/Bicicleta.cpp ../clases/Estacion.cpp ../primitivas/Cola.cpp ../clases/Viaje.cpp ../primitivas/NodoCola.cpp -o sistema_bicis
 ```
 *(Nota: cuando se vayan integrando los demás módulos agregar sus `.cpp` al comando de compilación).*
 
@@ -31,7 +31,7 @@ g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicle
 
 ## Descripción de módulos
 
-* **Módulo A - Gestión de Estaciones:**
+* **Módulo A - Gestión de Estaciones:** Administración de las estaciones de bicicletas y las conexiones (ciclovías) entre ellas. Soporta búsqueda por código de la estación, alta y baja de estaciones, listado de estaciones según dos criterios a elección del usuario (capacidad total de anclajes o cantidad de bicicletas disponibles), listado de estaciones con baja ocupación y ruta óptima entre dos estaciones.
 * **Módulo B - Viajes y Colas de Espera:**
 * **Módulo C - Registro de Bicicletas (ABB):** Almacenamiento de todas las bicicletas de la red en un Árbol Binario de Búsqueda ordenado por `bici_id`. Soporta inserción, búsqueda, listado ordenado (`inOrder`), conteo de bicicletas averiadas, cálculo de altura, eliminación de nodos (hoja, un hijo y dos hijos) y liberación completa de memoria (`postOrder`).
 * **Módulo D - Redistribución con Backtracking:**
@@ -41,9 +41,12 @@ g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicle
 ## Respuestas a las consignas de análisis
 
 ### Módulo A: Tabla de Hash
-* **Función hash utilizada:** *[Completar]*
-* **Cantidad de colisiones con los datos de prueba:** *[Completar]*
-* **Factor de carga final:** *[Completar]*
+* **Función hash utilizada:** Hash polinómico de cadenas (multiplicando los códigos ASCII por 128), combinada con la función módulo sobre una capacidad inicial prima (101).
+* **Capacidad de la tabla:** 101 posiciones (*buckets*).
+* **Cantidad de colisiones con los datos de prueba:** 0 colisiones.
+* **Factor de carga final:**
+  * Con datos de prueba reales (3 estaciones): 0.03
+  * Proyección de diseño estimada (80 estaciones): 0.79
 
 ### Módulo B: Complejidad y elección de estructuras
 1. **Viajes desde una estación en un rango de fechas:**
