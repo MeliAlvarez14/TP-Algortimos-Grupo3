@@ -35,8 +35,7 @@ class SistemaBicicletas {
         void informacionDeEstacion(std::string codigo);
         void agregarEstacion(std::string codigo, std::string nombre, std::string barrio, int capacidadAnclajes, int bicisDisponibles);
         void eliminarEstacion(std::string codigo);
-        void listarEstacionesPorCapacidadDeAnclaje();
-        void listarEstacionesPorBicicletasDisponibles();
+        void listarEstaciones(int opcion);
         void listarEstacionesConMenosOcupacion();
         void menorRecorridoPorCiclovia(std::string codOrigen, std::string codDestino);
         

@@ -16,6 +16,7 @@ private:
 
 public:
     // Constructor
+    Estacion();
     Estacion(std::string codigo, std::string nombre, std::string barrio, int capacidadAnclajes, int bicisDisponibles);
     
     // Getters y Setters

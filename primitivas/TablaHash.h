@@ -129,6 +129,17 @@ class TablaHash {
             return cantidad;
         }
 
+        void obtenerValores(TValor* arreglo[], int& indiceActual) const {
+            for (int i = 0; i < capacidad; i++) {
+                NodoHash<TClave, TValor>* actual = tabla[i];
+                while (actual != nullptr) {
+                    arreglo[indiceActual] = &(actual->obtenerValor());
+                    indiceActual++;
+                    actual = actual->obtenerSiguiente();
+                }
+            }
+        }
+
         bool estaVacia() {
             return cantidad == 0;
         }

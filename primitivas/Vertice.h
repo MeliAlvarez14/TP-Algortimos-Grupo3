@@ -11,7 +11,8 @@ private:
     Nodo<S>* primero;   
 
 public:
-
+    Vertice() : primero(nullptr) {}
+    
     Vertice(T d) : dato(d), primero(nullptr){}
 
     ~Vertice() {

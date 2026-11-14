@@ -64,6 +64,23 @@ public:
         cantidadVertices--;
     }
 
+    void obtenerDatosVertices(S arregloDestino[], int& indice) const {
+        int total = obtenerCantidadVertices();
+        if (total == 0) return;
+
+        Vertice<S, T>** punterosVertices = new Vertice<S, T>*[total];
+        int indiceTemp = 0;
+
+        tablaVertices.obtenerValores(punterosVertices, indiceTemp);
+
+        for (int i = 0; i < total; i++) {
+            arregloDestino[indice] = punterosVertices[i]->obtenerDato();
+            indice++;
+        }
+
+        delete[] punterosVertices;
+    }
+
     void bfs(T origen, T destino) {
         Vertice<S, T>* vOrigen = tablaVertices.buscarClave(origen);
         Vertice<S, T>* vDestino = tablaVertices.buscarClave(destino);

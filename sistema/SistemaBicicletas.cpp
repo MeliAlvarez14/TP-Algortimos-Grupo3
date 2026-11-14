@@ -93,9 +93,88 @@ void SistemaBicicletas::eliminarEstacion(string codigo) {
     }
 }
 
-void SistemaBicicletas::listarEstacionesPorCapacidadDeAnclaje() {}
-void SistemaBicicletas::listarEstacionesPorBicicletasDisponibles() {}
-void SistemaBicicletas::listarEstacionesConMenosOcupacion() {}
+void SistemaBicicletas::listarEstaciones(int opcion) {
+    int cantidad = estaciones.obtenerCantidadVertices(); 
+    if (cantidad == 0) {
+        cout << "No hay estaciones registradas." << endl;
+        return;
+    }
+
+    if (opcion != 1 && opcion != 2) {
+        cout << "Opcion invalida.\n";
+        return;
+    }
+
+    Estacion* datosEstaciones = new Estacion[cantidad];
+    int indice = 0;
+
+    estaciones.obtenerDatosVertices(datosEstaciones, indice);
+
+    // Inserción
+    for (int i = 1; i < cantidad; i++) {
+        Estacion actual = datosEstaciones[i];
+        int j = i - 1;
+
+        if (opcion == 1) {
+            while (j >= 0 && datosEstaciones[j].getCapacidadAnclajes() > actual.getCapacidadAnclajes()) {
+                datosEstaciones[j + 1] = datosEstaciones[j];
+                j--;
+            }
+        } else if (opcion == 2) {
+            while (j >= 0 && datosEstaciones[j].getBicisDisponibles() > actual.getBicisDisponibles()) {
+                datosEstaciones[j + 1] = datosEstaciones[j];
+                j--;
+            }
+        }
+        datosEstaciones[j + 1] = actual;
+    }
+
+    cout << "\n----------------------------------------------------\n";
+    cout << "ESTACIONES ORDENADAS\n";
+    cout << "----------------------------------------------------\n";
+    for (int i = 0; i < cantidad; i++) {
+        cout << "Estación: " << datosEstaciones[i].getNombre()
+             << " | Anclajes: " << datosEstaciones[i].getCapacidadAnclajes() 
+             << " | Bicis disponibles: " << datosEstaciones[i].getBicisDisponibles() << "\n";
+    }
+    cout << "----------------------------------------------------\n";
+
+    delete[] datosEstaciones;
+}
+
+void SistemaBicicletas::listarEstacionesConMenosOcupacion() {
+    int cantidad = estaciones.obtenerCantidadVertices(); 
+    if (cantidad == 0) {
+        cout << "No hay estaciones registradas." << endl;
+        return;
+    }
+
+    Estacion* datosEstaciones = new Estacion[cantidad];
+    int indice = 0, cantBajaOcupacion = 0;
+
+    estaciones.obtenerDatosVertices(datosEstaciones, indice);
+
+    for (int i = 0; i < cantidad; i++) {
+        int capacidad = datosEstaciones[i].getCapacidadAnclajes();
+        int bicis = datosEstaciones[i].getBicisDisponibles();
+
+        if (capacidad > 0) {
+            if ((bicis * 1.0) / capacidad < 0.20) {
+                cout << "Estación: " << datosEstaciones[i].getNombre()
+                     << " | Anclajes: " << capacidad 
+                     << " | Bicis disponibles: " << bicis << "\n";
+                cantBajaOcupacion++;
+            }
+        }
+    }
+
+    if (cantBajaOcupacion == 0) {
+        cout << "No hay estaciones con menos del 20% de ocupación.\n";
+    }
+
+    delete[] datosEstaciones;
+}
+
 
 void SistemaBicicletas::menorRecorridoPorCiclovia(string codOrigen, string codDestino) {
     Vertice<Estacion, string>* vOrigen = estaciones.obtenerVertice(codOrigen);

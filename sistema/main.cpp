@@ -11,10 +11,9 @@ void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
         cout << "1. Mostrar información de una estación por su código" << endl;
         cout << "2. Agregar una estación nueva al sistema" << endl;
         cout << "3. Eliminar una estación" << endl;
-        cout << "4. Listar estaciones ordenadas por capacidad de anclajes" << endl;
-        cout << "5. Listar estaciones ordenadas por bicicletas disponibles" << endl;
-        cout << "6. Listar estaciones con menos del 20% de ocupación" << endl;
-        cout << "7. Calcular recorrido por ciclovías" << endl;
+        cout << "4. Listar estaciones ordenadas" << endl;
+        cout << "5. Listar estaciones con menos del 20% de ocupación" << endl;
+        cout << "6. Calcular recorrido por ciclovías" << endl;
         cout << "0. Volver al menu principal" << endl;
         cout << "Seleccione una opcion: ";
         cin >> opcion;
@@ -51,18 +50,18 @@ void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
                 break;
             }
             case 4: {
-                sistema.listarEstacionesPorCapacidadDeAnclaje();
+                int opcion;
+                cout << "1. Para listar por capacidad de anclaje." << endl;
+                cout << "2. Para listar por cantidad de bicicletas disponibles." << endl;
+                cin >> opcion;
+                sistema.listarEstaciones(opcion);
                 break;
             }
             case 5: {
-                sistema.listarEstacionesPorBicicletasDisponibles();
-                break;
-            }
-            case 6: {
                 sistema.listarEstacionesConMenosOcupacion();
                 break;
             }
-            case 7: {
+            case 6: {
                 string estOrigen, estDestino;
                 cout << "Ingrese el código de la estación origen: ";
                 cin >> estOrigen;
