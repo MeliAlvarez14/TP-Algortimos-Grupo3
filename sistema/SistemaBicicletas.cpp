@@ -7,8 +7,8 @@ using namespace std;
 
 SistemaBicicletas::SistemaBicicletas() {
     // Los constructores de ABB y demás estructuras se ejecutan automáticamente
-    // primerViaje = nullptr;
-    // cantidadViajes = 0;
+    primerViaje = nullptr;
+    cantidadViajes = 0;
 }
 
 void SistemaBicicletas::inicializarSistema() {

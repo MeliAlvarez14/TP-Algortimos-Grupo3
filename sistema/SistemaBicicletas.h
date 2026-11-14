@@ -7,7 +7,7 @@
 #include "Viaje.h"
 #include "Nodo.h"
 
-// A medida que tus compañeros terminen sus partes, incluyen sus .h acá:
+// A medida que avancemos, incluir los .h acá:
 // #include "TablaHashEstaciones.h"
 // #include "TallerHeap.h"
 
@@ -36,7 +36,7 @@ public:
     void listarBicicletasConMasDeKm(int minKm); //hacer metodo en el ABB
     void retirarBicicleta(std::string dni, std::string codigoEstacion); //descuenta una bici de bicisDisponibles de la Estación, si no hay se encola en colaEspera de Estación.
     void devolverBicicleta(Bicicleta* bici, std::string codigoEstacion); //Actualiza el códigoEstación de la Bicicleta, y se aumenta en 1 bicisDispoibles de esa estación. Y si hay colaEspera hace retirarBicicleta(dni, codEst)
-    Bicicleta* bucarBicicletaPorId(int idBici); //método auxiliar para poder actualizar el códigoEstación al devolver una bici
+    Bicicleta* buscarBicicletaPorId(int idBici); //método auxiliar para poder actualizar el códigoEstación al devolver una bici
     //B.5) PENDIENTE
 
     // --- Módulo C: Registro de Bicicletas (ABB) ---
