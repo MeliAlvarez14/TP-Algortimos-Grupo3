@@ -5,6 +5,7 @@
 #include "ABB.h"
 #include "Bicicleta.h"
 #include "Viaje.h"
+#include "Grafo.h"
 #include "Nodo.h"
 
 // A medida que avancemos, incluir los .h acá:
@@ -14,22 +15,32 @@
 class SistemaBicicletas {
 private:
     ABB arbolBicicletas;
-    // TablaHashEstaciones estaciones;
+    Grafo grafoEstaciones;
     // TallerHeap tallerReparaciones;
 
     Nodo<Viaje>* primerViaje;
     int cantidadViajes;
 
     void cargarBicicletas(std::string rutaArchivo);
-    // void cargarEstaciones(std::string rutaArchivo);
+    void cargarEstaciones(std::string rutaArchivo);
     void cargarViajes(std::string rutaArchivo);
-    // void cargarCiclovias(std::string rutaArchivo);
+    void cargarCiclovias(std::string rutaArchivo);
 
 public:
     SistemaBicicletas();
     ~SistemaBicicletas(); //para liberar memo del heap
     void inicializarSistema();
-
+    
+    // --- Módulo A: Gestión de Estaciones
+    void informacionDeEstacion(std::string codigo);
+    void agregarEstacion(std::string codigo, std::string nombre, std::string barrio, int capacidadAnclajes, int bicisDisponibles);
+    void eliminarEstacion(std::string codigo);
+    void listarEstacionesPorCapacidadDeAnclaje();
+    void listarEstacionesPorBicicletasDisponibles();
+    void listarEstacionesConMenosOcupacion();
+    void menorRecorridoPorCiclovia(std::string codOrigen, std::string codDestino);
+    
+    
     // --- Módulo B: Viajes
     void calcularViajesEstacionRango(std::string estacion, int fechaDesde, int fechaHasta);
     void buscarViajesUsuario(std::string dni);

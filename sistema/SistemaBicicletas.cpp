@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include "Estacion.h"
+#include "Vertice.h"
 
 using namespace std;
 
@@ -12,11 +13,123 @@ SistemaBicicletas::SistemaBicicletas() {
 }
 
 void SistemaBicicletas::inicializarSistema() {
-    // cargarEstaciones("estaciones.txt");
+    cargarEstaciones("estaciones.txt");
     cargarBicicletas("bicicletas.txt");
     cargarViajes("viajes.txt");
-    // cargarCiclovias("ciclovias.txt");
+    cargarCiclovias("ciclovias.txt");
 }
+
+//Módulo A
+void SistemaBicicletas::cargarEstaciones(std::string rutaArchivo) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error: No se pudo abrir el archivo " << rutaArchivo << endl;
+        return;
+    }
+
+    string codigo, nombre, barrio;
+    int capacidad, bicisDisponibles;
+
+    while (archivo >> codigo >> nombre >> barrio >> capacidad >> bicisDisponibles) {
+        Estacion nuevaEstacion(codigo, nombre, barrio, capacidad, bicisDisponibles);
+        
+        grafoEstaciones.agregarVertice(codigo, nuevaEstacion);
+    }
+
+    archivo.close();
+    cout << "Estaciones cargadas correctamente." << endl;
+}
+
+void SistemaBicicletas::cargarCiclovias(std::string rutaArchivo) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error: No se pudo abrir el archivo " << rutaArchivo << endl;
+        return;
+    }
+
+    string estacionA, estacionB;
+
+    while (archivo >> estacionA >> estacionB) {
+        grafoEstaciones.agregarArista(estacionA, estacionB);
+    }
+
+    archivo.close();
+    cout << "Ciclovias cargadas correctamente." << endl;
+}
+
+void SistemaBicicletas::informacionDeEstacion(std::string codigo) {
+    Vertice<std::string, Estacion>* verticeBuscado = grafoEstaciones.obtenerVertice(codigo);
+
+    if (verticeBuscado != nullptr){
+        Estacion estacionBuscada = verticeBuscado->obtenerDato();
+        estacionBuscada.mostrarInfo();
+    } else {
+        cout << "Error: No se encontro ninguna estacion con el codigo " << codigo << endl;
+    }
+}
+
+void SistemaBicicletas::agregarEstacion(std:string codigo, std::string nombre, std::string barrio, int capacidadAnclajes, int bicisDisponibles) {
+    std::string codigo, nombre, barrio;
+    int capacidadAnclajes, bicisDisponibles;
+
+    cout << "\n--- ALTA DE NUEVA ESTACION ---" << endl;
+    cout << "Ingrese codigo de la estacion: ";
+    cin >> codigo;
+
+    if (grafoEstaciones.obtenerVertice(codigo) != nullptr) {
+        cout << "Error: Ya existe una estacion con el codigo " << codigo << endl;
+        return;
+    }
+
+    cout << "Ingrese nombre: ";
+    cin >> nombre; 
+    
+    cout << "Ingrese barrio: ";
+    cin >> barrio;
+
+    cout << "Ingrese capacidad de anclajes: ";
+    cin >> capacidadAnclajes;
+
+    cout << "Ingrese bicicletas disponibles: ";
+    cin >> bicisDisponibles;
+
+    Estacion nuevaEstacion(codigo, nombre, barrio, capacidadAnclajes, bicisDisponibles);
+    grafoEstaciones.agregarVertice(codigo, nuevaEstacion);
+
+    cout << "¡Estacion agregada exitosamente al sistema!" << endl;
+}
+
+void SistemaBicicletas::eliminarEstacion(std:string codigo) {
+    Vertice<std::string, Estacion>* verticeBuscado = grafoEstaciones.obtenerVertice(codigo);
+
+    if (verticeBuscado != nullptr){
+        grafoEstaciones.eliminarVertice(codigo);
+        cout << "Estación (" << codigo << ") eliminada correctamente " << endl;
+    } else {
+        cout << "Error: No se encontro ninguna estacion con el codigo " << codigo << endl;
+    }
+}
+
+void SistemaBicicletas::listarEstacionesPorCapacidadDeAnclaje();
+void SistemaBicicletas::listarEstacionesPorBicicletasDisponibles();
+void SistemaBicicletas::listarEstacionesConMenosOcupacion();
+
+void SistemaBicicletas::menorRecorridoPorCiclovia(std:string codOrigen, std:string codDestino) {
+    Vertice<std::string, Estacion>* vOrigen = grafoEstaciones.obtenerVertice(codOrigen);
+    if (vOrigen == nullptr) {
+        cout << "Error: La estacion de origen con codigo '" << codOrigen << "' no existe." << endl;
+        return;
+    }
+
+    Vertice<std::string, Estacion>* vDestino = grafoEstaciones.obtenerVertice(codDestino);
+    if (vDestino == nullptr) {
+        cout << "Error: La estacion de destino con codigo '" << codDestino << "' no existe." << endl;
+        return;
+    }
+
+    grafoEstaciones.bfs(codOrigen, codDestino);
+}
+
 
 //Módulo B
 void SistemaBicicletas::cargarViajes(string rutaArchivo) {

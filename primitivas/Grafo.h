@@ -89,10 +89,10 @@ public:
 
             Vertice<T, S>* vActual = tablaVertices.buscarClave(actualClave);
             if (vActual != nullptr) {
-                Nodo<S>* vecinoNodo = vActual->obtenerPrimero();
+                Nodo<T>* vecinoNodo = vActual->obtenerPrimero();
                 
                 while (vecinoNodo != nullptr) {
-                    S vecinoClave = vecinoNodo->obtenerDato();
+                    T vecinoClave = vecinoNodo->obtenerDato();
                     bool* yaVisitado = visitados.buscarClave(vecinoClave);
 
                     if (yaVisitado == nullptr) {
@@ -119,7 +119,9 @@ public:
             }
 
             std::cout << origen << std::endl;
-            }
+        } else {
+            std::cout << "No existe recorrido posible entre " << origen << " y " << destino << "." << std::endl;
+        }
     }
 };
 
