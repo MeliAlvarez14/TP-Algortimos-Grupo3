@@ -1,5 +1,5 @@
 #include <iostream>
-#include "bicicleta.h"
+#include "Bicicleta.h"
 using namespace std;
 
 Bicicleta::Bicicleta(int id, string estacion, string tipoBici, string estadoBici, int km){
