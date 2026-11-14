@@ -66,6 +66,80 @@ void mostrarMenuBicicletas(SistemaBicicletas& sistema) {
     } while (opcion != 0);
 }
 
+void mostrarMenuViajes(SistemaBicicletas& sistema) {
+    int opcion;
+    do {
+        cout << "\n=== MODULO B: VIAJES Y COLAS DE ESPERA ===" << endl;
+        cout << "1. Calcular viajes de una estacion en rango de fechas" << endl;
+        cout << "2. Buscar viajes y minutos de un usuario por DNI" << endl;
+        cout << "3. Listar bicicletas con mas de X kilometros" << endl;
+        cout << "4. Retirar bicicleta de una estacion (o entrar en espera)" << endl;
+        cout << "5. Devolver bicicleta a una estacion" << endl;
+        cout << "0. Volver al menu principal" << endl;
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                string estacion;
+                int fechaDesde, fechaHasta;
+                cout << "Codigo de estacion (ej. PLZ): ";
+                cin >> estacion;
+                cout << "Fecha desde (AAAAMMDD): ";
+                cin >> fechaDesde;
+                cout << "Fecha hasta (AAAAMMDD): ";
+                cin >> fechaHasta;
+                sistema.calcularViajesEstacionRango(estacion, fechaDesde, fechaHasta);
+                break;
+            }
+            case 2: {
+                string dni;
+                cout << "Ingrese el DNI del usuario: ";
+                cin >> dni;
+                sistema.buscarViajesUsuario(dni);
+                break;
+            }
+            case 3: {
+                int minKm;
+                cout << "Ingrese el kilometraje minimo (X): ";
+                cin >> minKm;
+                sistema.listarBicicletasConMasDeKm(minKm);
+                break;
+            }
+            case 4: {
+                string dni, estacion;
+                cout << "DNI del usuario: ";
+                cin >> dni;
+                cout << "Codigo de estacion: ";
+                cin >> estacion;
+                sistema.retirarBicicleta(dni, estacion);
+                break;
+            }
+            case 5: {
+                int idBici;
+                string estacion;
+                cout << "ID de la bicicleta a devolver: ";
+                cin >> idBici;
+                cout << "Codigo de estacion de destino: ";
+                cin >> estacion;
+                
+                // Buscamos la bici en el arbol para pasarla por referencia/puntero
+                Bicicleta* bici = sistema.bucarBicicletaPorId(idBici);
+                if (bici != nullptr) {
+                    sistema.devolverBicicleta(bici, estacion);
+                } else {
+                    cout << "Error: No se encontro la bicicleta con ID " << idBici << endl;
+                }
+                break;
+            }
+            case 0:
+                break;
+            default:
+                cout << "Opcion invalida." << endl;
+        }
+    } while (opcion != 0);
+}
+
 int main() {
     SistemaBicicletas sistema;
     sistema.inicializarSistema();
@@ -88,7 +162,7 @@ int main() {
                 cout << "[Pendiente de integracion - Modulo A]" << endl;
                 break;
             case 2:
-                cout << "[Pendiente de integracion - Modulo B]" << endl;
+                mostrarMenuViajes(sistema);
                 break;
             case 3:
                 mostrarMenuBicicletas(sistema);

@@ -4,6 +4,8 @@
 #include <string>
 #include "ABB.h"
 #include "Bicicleta.h"
+#include "Viaje.h"
+#include "Nodo.h"
 
 // A medida que tus compañeros terminen sus partes, incluyen sus .h acá:
 // #include "TablaHashEstaciones.h"
@@ -15,14 +17,27 @@ private:
     // TablaHashEstaciones estaciones;
     // TallerHeap tallerReparaciones;
 
+    Nodo<Viaje>* primerViaje;
+    int cantidadViajes;
+
     void cargarBicicletas(std::string rutaArchivo);
     // void cargarEstaciones(std::string rutaArchivo);
-    // void cargarViajes(std::string rutaArchivo);
+    void cargarViajes(std::string rutaArchivo);
     // void cargarCiclovias(std::string rutaArchivo);
 
 public:
     SistemaBicicletas();
+    ~SistemaBicicletas(); //para liberar memo del heap
     void inicializarSistema();
+
+    // --- Módulo B: Viajes
+    void calcularViajesEstacionRango(std::string estacion, int fechaDesde, int fechaHasta);
+    void buscarViajesUsuario(std::string dni);
+    void listarBicicletasConMasDeKm(int minKm); //hacer metodo en el ABB
+    void retirarBicicleta(std::string dni, std::string codigoEstacion); //descuenta una bici de bicisDisponibles de la Estación, si no hay se encola en colaEspera de Estación.
+    void devolverBicicleta(Bicicleta* bici, std::string codigoEstacion); //Actualiza el códigoEstación de la Bicicleta, y se aumenta en 1 bicisDispoibles de esa estación. Y si hay colaEspera hace retirarBicicleta(dni, codEst)
+    Bicicleta* bucarBicicletaPorId(int idBici); //método auxiliar para poder actualizar el códigoEstación al devolver una bici
+    //B.5) PENDIENTE
 
     // --- Módulo C: Registro de Bicicletas (ABB) ---
     void registrarBicicleta(int id, std::string estacion, std::string tipo, std::string estado, int km);
@@ -32,8 +47,6 @@ public:
     void mostrarAlturaArbol();
     void eliminarBicicletaDelArbol(int id);
 
-    // --- Apoyo al Módulo B.3 (Bicicletas con más de X km) ---
-    void listarBicicletasConMasDeKm(int minKm);
 };
 
 #endif

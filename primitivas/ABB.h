@@ -16,6 +16,9 @@ private:
     int contarAveriadasRecursivo(NodoArbol* nodo);
     int calcularAlturaRecursivo(NodoArbol* nodo);
 
+    //Auxiliar para Módulo B
+    void listarConMasDeKmRecursivo(NodoArbol* nodo, int minKm);
+
 public:
     ABB();
     ~ABB(); // Libera la memoria con recorrido postorder
@@ -26,6 +29,9 @@ public:
     int contarAveriadas();
     int obtenerAltura();
     void eliminar(int clave);
+
+    //Módulo B.3
+    void listarConMasDeKm(int minKm);
     
 };
 

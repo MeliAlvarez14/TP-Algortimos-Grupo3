@@ -1,20 +1,137 @@
 #include "SistemaBicicletas.h"
 #include <iostream>
 #include <fstream>
+#include "Estacion.h"
 
 using namespace std;
 
 SistemaBicicletas::SistemaBicicletas() {
     // Los constructores de ABB y demás estructuras se ejecutan automáticamente
+    // primerViaje = nullptr;
+    // cantidadViajes = 0;
 }
 
 void SistemaBicicletas::inicializarSistema() {
     // cargarEstaciones("estaciones.txt");
     cargarBicicletas("bicicletas.txt");
-    // cargarViajes("viajes.txt");
+    cargarViajes("viajes.txt");
     // cargarCiclovias("ciclovias.txt");
 }
 
+//Módulo B
+void SistemaBicicletas::cargarViajes(string rutaArchivo) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error: No se pudo abrir el archivo " << rutaArchivo << endl;
+        return;
+    }
+
+    int idViaje, idBici, fecha, duracionMin;
+    string dniUsuario, estacionOrigen, estacionDestino;
+
+    while (archivo >> idViaje >> idBici >> dniUsuario >> estacionOrigen >> estacionDestino >> fecha >> duracionMin) {
+        Viaje nuevoViaje(idViaje, idBici, dniUsuario, estacionOrigen, estacionDestino, fecha, duracionMin);
+        
+        //Creacion nodo y se inserta al principio de la lista enlazada (manualmente)
+        Nodo<Viaje>* nuevoNodo = new Nodo<Viaje>(nuevoViaje);
+        nuevoNodo->cambiarSiguiente(primerViaje);
+        primerViaje = nuevoNodo;
+        cantidadViajes++;
+    }
+
+    archivo.close();
+    cout << "Viajes cargados correctamente en lista enlazada. Total: " << cantidadViajes << endl;
+}
+
+void SistemaBicicletas::calcularViajesEstacionRango(string estacionBuscada, int fechaDesde, int fechaHasta) {
+    int contador = 0;
+    Nodo<Viaje>* actual = primerViaje;
+
+    while (actual != nullptr) {
+        // Obtener Viaje guardado en el nodo
+        Viaje viajeActual = actual->obtenerDato();
+        
+        // Usar el método ya hecho de Viaje
+        if (viajeActual.salioDeEstacionEnRango(estacionBuscada, fechaDesde, fechaHasta)) {
+            contador++;
+        }
+        actual = actual->obtenerSiguiente();
+    }
+
+    cout << "Cantidad de viajes desde " << estacionBuscada 
+         << " entre " << fechaDesde << " y " << fechaHasta 
+         << ": " << contador << endl;
+}
+
+void SistemaBicicletas::buscarViajesUsuario(std::string dni){
+    int minutos = 0;
+    Nodo<Viaje>* actual = primerViaje;
+
+    while (actual != nullptr) {
+        // Obtener Viaje guardado en el nodo
+        Viaje viajeActual = actual->obtenerDato();
+        
+        if(viajeActual.perteneceAUsuario(dni)){
+            minutos = minutos + viajeActual.getDuracionMin();
+        }
+        actual = actual->obtenerSiguiente();
+    }
+
+    cout << "La cantidad de minutos pedaleados por el usuario " << dni 
+         << " fueron: " << minutos << endl;
+}
+
+void SistemaBicicletas::retirarBicicleta(std::string dni, std::string codigoEstacion) {
+    // Buscamos la estación en la tabla hash de estaciones y verificamos existencia
+    Estacion* estacion = estaciones.buscarClave(codigoEstacion); //FALTA ESTACIONES DE LA TABLA HASH ->Módulo A
+    if (estacion == nullptr) {
+        cout << "Error: La estacion con codigo " << codigoEstacion << " no existe." << endl;
+        return;
+    }
+
+    // Si hay bicicletas disponibles, se descuenta una
+    if (estacion->getBicisDisponibles() > 0) {
+        estacion->setBicisDisponibles(estacion->getBicisDisponibles() - 1);
+        cout << "Bicicleta retirada con exito de la estacion " << codigoEstacion 
+             << " por el usuario (DNI: " << dni << ")." << endl;
+    } else {
+        // Si no hay disponibles, se encola al usuario en la cola de espera de la estación
+        estacion->agregarAColaEspera(dni);
+        cout << "No hay bicis disponibles en " << codigoEstacion 
+             << ". El usuario DNI " << dni << " fue agregado a la cola de espera." << endl;
+    }
+}
+
+void SistemaBicicletas::devolverBicicleta(Bicicleta* bici, std::string codigoEstacion) {
+    if (bici == nullptr) {
+        cout << "Error: Bicicleta invalida." << endl;
+        return;
+    }
+
+    // Buscamos la estación
+    Estacion* estacion = estaciones.buscarClave(codigoEstacion); //FALTA ESTACIONES DE LA TABLA HASH ->Módulo A
+    if (estacion == nullptr) {
+        cout << "Error: La estacion con codigo " << codigoEstacion << " no existe." << endl;
+        return;
+    }
+
+    // Si existe actualizamos el código de estación de la bicicleta
+    bici->cambiarEstacion(codigoEstacion);
+
+    //Aumentamos en 1 las bicicletas disponibles de la estación
+    estacion->setBicisDisponibles(estacion->getBicisDisponibles() + 1);
+    cout << "Bicicleta devuelta en la estacion " << codigoEstacion << "." << endl;
+
+    //Si hay gente en la cola de espera, se le asigna la bici al primero
+    if (!estacion->estaColaVacia()) {
+        std::string dniSiguiente = estacion->atenderSiguienteEnEspera();
+        cout << "Habia un usuario en espera en esta estacion." << endl;
+        //Llamamos a retirarBicicleta para asignársela al usuario que estaba esperando
+        retirarBicicleta(dniSiguiente, codigoEstacion);
+    }
+}
+
+//Módulo C
 void SistemaBicicletas::cargarBicicletas(string rutaArchivo) {
     ifstream archivo(rutaArchivo);
     if (!archivo.is_open()) {
@@ -60,6 +177,11 @@ void SistemaBicicletas::buscarYMostrarBicicleta(int id) {
     } else {
         cout << "No se encontro ninguna bicicleta con el ID " << id << "." << endl;
     }
+}
+
+Bicicleta* SistemaBicicletas::bucarBicicletaPorId(int id){
+    Bicicleta* unaBici = arbolBicicletas.buscar(id);
+    return unaBici;
 }
 
 void SistemaBicicletas::listarBicicletasInOrder() {

@@ -161,3 +161,24 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
     }
     return nodo;
 }
+
+//Módulo B.3
+void ABB::listarConMasDeKm(int minKm) { //método publico que usa el recursivo privado
+    listarConMasDeKmRecursivo(this->raiz, minKm);
+}
+
+void ABB::listarConMasDeKmRecursivo(NodoArbol* nodo, int minKm) {
+    if (nodo != nullptr) {
+        //recorrer subárbol izquierdo
+        listarConMasDeKmRecursivo(nodo->obtenerIzquierdo(), minKm);
+
+        //procesar nodo actual
+        Bicicleta* bici = nodo->obtenerBicicleta();
+        if (bici != nullptr && bici->obtenerKilometros() > minKm) {
+            bici->mostrarDatos();
+        }
+
+        //recorrer subárbol derecho
+        listarConMasDeKmRecursivo(nodo->obtenerDerecho(), minKm);
+    }
+}
