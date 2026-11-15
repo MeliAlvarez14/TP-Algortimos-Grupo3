@@ -60,7 +60,7 @@ void TallerHeap::hundir(int indice) {
         ElementoHeap temp = arreglo[indice];
         arreglo[indice] = arreglo[menor];
         arreglo[menor] = temp;
-        hundir(menor);
+        hundir(menor); //Se llama recursivamente para ordenar todo el arreglo
     }
 }
 
