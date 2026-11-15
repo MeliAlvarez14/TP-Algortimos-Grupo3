@@ -310,6 +310,31 @@ void SistemaBicicletas::devolverBicicleta(Bicicleta* bici, std::string codigoEst
     }
 }
 
+
+//Módulo B-5
+void SistemaBicicletas::enviarAlTaller(int idBici, int prioridad) {
+    Bicicleta* bici = arbolBicicletas.buscar(idBici);
+    if (bici == nullptr) {
+        cout << "No se encontro la bicicleta." << endl;
+        return;
+    }
+    bici->cambiarEstado("Averiada");
+    //Se le pasa la prioridad configurable por parámetro, pero si es electrica se cambia automáticamente a 1
+    int prioReal = (bici->obtenerTipo() == "Electrica") ? 1 : prioridad;
+    tallerReparaciones.insertar(bici, prioReal);
+    cout << "Bicicleta " << idBici << " enviada al taller con prioridad " << prioReal << "." << endl;
+}
+
+void SistemaBicicletas::atenderSiguienteTaller() {
+    Bicicleta* biciUrgente = tallerReparaciones.extraerMasUrgente();
+    if (biciUrgente == nullptr) {
+        cout << "El taller no tiene bicicletas en reparacion." << endl;
+        return;
+    }
+    biciUrgente->cambiarEstado("OK");
+    cout << "Bicicleta " << biciUrgente->obtenerId() << " reparada y devuelta al sistema con estado OK." << endl;
+}
+
 //Módulo C
 void SistemaBicicletas::cargarBicicletas(string rutaArchivo) {
     ifstream archivo(rutaArchivo);
@@ -326,10 +351,10 @@ void SistemaBicicletas::cargarBicicletas(string rutaArchivo) {
         arbolBicicletas.insertar(id, nuevaBici);
 
         // CONEXIÓN CON MÓDULO B.5 (Taller / Min-Heap):
-        // if (estado == "Averiada") {
-        //     int prioridad = (tipo == "Electrica") ? 1 : 2; // o la que corresponda
-        //     tallerReparaciones.insertar(nuevaBici, prioridad);
-        // }
+        if (estado == "Averiada") {
+            int prioridad = (tipo == "Electrica") ? 1 : 2;
+            tallerReparaciones.insertar(nuevaBici, prioridad);
+        }
     }
 
     archivo.close();
