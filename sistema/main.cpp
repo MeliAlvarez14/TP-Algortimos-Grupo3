@@ -14,6 +14,7 @@ void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
         cout << "4. Listar estaciones ordenadas" << endl;
         cout << "5. Listar estaciones con menos del 20% de ocupación" << endl;
         cout << "6. Calcular recorrido por ciclovías" << endl;
+        cout << "7. Camino para redistribuir bicicletas" << endl;
         cout << "0. Volver al menu principal" << endl;
         cout << "Seleccione una opcion: ";
         cin >> opcion;
@@ -68,6 +69,7 @@ void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
                 cout << "Ingrese el código de la estación destino: ";
                 cin >> estDestino;
                 sistema.menorRecorridoPorCiclovia(estOrigen, estDestino);
+                break;
             }
             case 0:
                 break;
@@ -240,9 +242,31 @@ int main() {
             case 3:
                 mostrarMenuBicicletas(sistema);
                 break;
-            case 4:
-                cout << "[Pendiente de integracion - Modulo D]" << endl;
+            case 4: {
+                int capacidad, n;
+                cout << "Ingrese la capacidad del camión (C): ";
+                cin >> capacidad;
+                cout << "Ingrese la cantidad de estaciones candidatas: ";
+                cin >> n;
+
+                if (n <= 0) {
+                    cout << "La cantidad de estaciones debe ser mayor a 0." << endl;
+                    break;
+                }
+
+                EstacionFaltante* lista = new EstacionFaltante[n];
+                for (int i = 0; i < n; ++i) {
+                    cout << "Estación " << (i + 1) << " - Código: ";
+                    cin >> lista[i].codigo;
+                    cout << "Estación " << (i + 1) << " - Cantidad de bicicletas faltantes: ";
+                    cin >> lista[i].faltante;
+                }
+
+                sistema.redistribuirBicicletas(lista, n, capacidad);
+
+                delete[] lista;
                 break;
+            }
             case 0:
                 cout << "Cerrando sistema y liberando memoria..." << endl;
                 break;
