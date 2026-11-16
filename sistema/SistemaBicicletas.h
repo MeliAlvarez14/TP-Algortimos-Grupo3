@@ -10,9 +10,6 @@
 #include "Nodo.h"
 #include "TallerHeap.h"
 
-// A medida que avancemos, incluir los .h acá:
-// #include "TallerHeap.h"
-
 struct EstacionFaltante {
     std::string codigo;
     int faltante;

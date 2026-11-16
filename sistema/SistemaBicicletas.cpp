@@ -264,7 +264,7 @@ void SistemaBicicletas::retirarBicicleta(std::string dni, std::string codigoEsta
         return;
     }
 
-    Estacion& estacion = estacionBuscada->obtenerDato(); //FALTA ESTACIONES DE LA TABLA HASH ->Módulo A
+    Estacion& estacion = estacionBuscada->obtenerDato(); 
 
     // Si hay bicicletas disponibles, se descuenta una
     if (estacion.getBicisDisponibles() > 0) {
@@ -417,9 +417,7 @@ void SistemaBicicletas::eliminarBicicletaDelArbol(int id) {
 
 void SistemaBicicletas::listarBicicletasConMasDeKm(int minKm) {
     cout << "\n--- Bicicletas con mas de " << minKm << " km (Para revision) ---" << endl;
-    // Tip: Agregar en ABB un método público listarConMasDeKm(int minKm)
-    // que recorra recursivamente e imprima si nodo->obtenerBicicleta()->obtenerKilometros() > minKm
-    // arbolBicicletas.listarConMasDeKm(minKm);
+    arbolBicicletas.listarConMasDeKm(minKm);
 }
 
 

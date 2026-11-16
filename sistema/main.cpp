@@ -14,7 +14,6 @@ void mostrarMenuEstaciones(SistemaBicicletas& sistema) {
         cout << "4. Listar estaciones ordenadas" << endl;
         cout << "5. Listar estaciones con menos del 20% de ocupación" << endl;
         cout << "6. Calcular recorrido por ciclovías" << endl;
-        cout << "7. Camino para redistribuir bicicletas" << endl;
         cout << "0. Volver al menu principal" << endl;
         cout << "Seleccione una opcion: ";
         cin >> opcion;
@@ -150,6 +149,8 @@ void mostrarMenuViajes(SistemaBicicletas& sistema) {
         cout << "3. Listar bicicletas con mas de X kilometros" << endl;
         cout << "4. Retirar bicicleta de una estacion (o entrar en espera)" << endl;
         cout << "5. Devolver bicicleta a una estacion" << endl;
+        cout << "6. Enviar bicicleta al taller" << endl;
+        cout << "7. Atender próxima bicicleta del taller" << endl;
         cout << "0. Volver al menu principal" << endl;
         cout << "Seleccione una opcion: ";
         cin >> opcion;
@@ -205,6 +206,20 @@ void mostrarMenuViajes(SistemaBicicletas& sistema) {
                 } else {
                     cout << "Error: No se encontro la bicicleta con ID " << idBici << endl;
                 }
+                break;
+            }
+            case 6: {
+                int idBici, prioridad;
+                cout << "ID de la bicicleta a enviar al taller: ";
+                cin >> idBici;
+                cout << "Ingrese prioridad de la bicicleta (1, 2 o 3): ";
+                cin >> prioridad;
+
+                sistema.enviarAlTaller(idBici, prioridad);
+                break;
+            }
+            case 7: {
+                sistema.atenderSiguienteTaller();
                 break;
             }
             case 0:
