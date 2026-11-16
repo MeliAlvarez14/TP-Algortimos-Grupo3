@@ -8,6 +8,7 @@
 #include "Grafo.h"
 #include "Estacion.h"
 #include "Nodo.h"
+#include "TallerHeap.h"
 
 // A medida que avancemos, incluir los .h acá:
 // #include "TallerHeap.h"
@@ -16,7 +17,7 @@ class SistemaBicicletas {
     private:
         ABB arbolBicicletas;
         Grafo<std::string, Estacion> estaciones;
-        // TallerHeap tallerReparaciones;
+        TallerHeap tallerReparaciones;
 
         Nodo<Viaje>* primerViaje;
         int cantidadViajes;
@@ -47,7 +48,9 @@ class SistemaBicicletas {
         void retirarBicicleta(std::string dni, std::string codigoEstacion); //descuenta una bici de bicisDisponibles de la Estación, si no hay se encola en colaEspera de Estación.
         void devolverBicicleta(Bicicleta* bici, std::string codigoEstacion); //Actualiza el códigoEstación de la Bicicleta, y se aumenta en 1 bicisDispoibles de esa estación. Y si hay colaEspera hace retirarBicicleta(dni, codEst)
         Bicicleta* buscarBicicletaPorId(int idBici); //método auxiliar para poder actualizar el códigoEstación al devolver una bici
-        //B.5) PENDIENTE
+        // --- Métodos del Módulo B.5 (Taller / Min-Heap) ---
+        void enviarAlTaller(int idBici, int prioridad);
+        void atenderSiguienteTaller();
 
         // --- Módulo C: Registro de Bicicletas (ABB) ---
         void registrarBicicleta(int id, std::string estacion, std::string tipo, std::string estado, int km);
