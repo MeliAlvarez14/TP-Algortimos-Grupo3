@@ -12,6 +12,11 @@
 // A medida que avancemos, incluir los .h acá:
 // #include "TallerHeap.h"
 
+struct EstacionFaltante {
+    std::string codigo;
+    int faltante;
+};
+
 class SistemaBicicletas {
     private:
         ABB arbolBicicletas;
@@ -26,6 +31,18 @@ class SistemaBicicletas {
         void cargarViajes(std::string rutaArchivo);
         void cargarCiclovias(std::string rutaArchivo);
 
+        void imprimirSubconjunto(const std::string* actual, int tamActual) const;
+        void backtrack(
+            const EstacionFaltante* estaciones,
+            int n,
+            int indice,
+            int capacidadObjetivo,
+            int sumActual,
+            std::string* actual,
+            int tamActual,
+            int& cantidadSoluciones
+        ) const;
+
     public:
         SistemaBicicletas();
         ~SistemaBicicletas(); //para liberar memo del heap
@@ -38,6 +55,7 @@ class SistemaBicicletas {
         void listarEstaciones(int opcion);
         void listarEstacionesConMenosOcupacion();
         void menorRecorridoPorCiclovia(std::string codOrigen, std::string codDestino);
+        void redistribuirBicicletas(const EstacionFaltante* estaciones, int n, int capacidad) const;
         
         
         // --- Módulo B: Viajes
