@@ -13,7 +13,7 @@ cd sistema
 
 2. Compilar el proyecto (sin warnings, bajo el estándar C++17):
 ```bash
-g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicletas.cpp ../primitivas/ABB.cpp ../primitivas/NodoArbol.cpp ../clases/Bicicleta.cpp ../clases/Estacion.cpp ../primitivas/Cola.cpp ../clases/Viaje.cpp ../primitivas/NodoCola.cpp -o sistema_bicis
+g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicletas.cpp ../primitivas/ABB.cpp ../primitivas/NodoArbol.cpp ../clases/Bicicleta.cpp ../clases/Estacion.cpp ../primitivas/Cola.cpp ../clases/Viaje.cpp ../primitivas/NodoCola.cpp ../clases/TallerHeap.cpp -o sistema_bicis
 ```
 *(Nota: cuando se vayan integrando los demás módulos agregar sus `.cpp` al comando de compilación).*
 
