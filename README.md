@@ -50,20 +50,20 @@ g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicle
 
 ### Módulo B: Complejidad y elección de estructuras
 1. **Viajes desde una estación en un rango de fechas:**
-   * *Complejidad:* *[Completar en notación Big O]*
-   * *Justificación:* *[Completar]*
+   * **Complejidad:** O(N), donde N es la cantidad total de viajes registrados en el sistema.
+   * **Justificación:** Para almacenar el historial completo de viajes se eligió una lista enlazada simple (Nodo<Viaje>) implementada manualmente (no creamos una estructura generalizada en su propio archivo), permitiendo inserciones en O(1) al leer el archivo. Ya que la consulta requiere filtrar simultáneamente por estación de origen y un intervalo de fechas, es necesario recorrer secuencialmente todos los nodos de la lista para evaluar cada registro.
 2. **Viajes y minutos pedaleados por DNI:**
-   * *Complejidad:* *[Completar en notación Big O]*
-   * *Justificación:* *[Completar]*
+   * **Complejidad:** O(N), donde N es la cantidad total de viajes registrados
+   * **Justificación:** Se reutilizó la misma lista enlazada simple (Nodo<Viaje>). Como un mismo usuario puede haber realizado múltiples viajes en distintos momentos, recorrer la lista de principio a fin garantiza encontrar todas sus apariciones y acumular la duración en minutos de forma lineal.
 3. **Bicicletas con más de X kilómetros:**
-   * *Complejidad:* O(n) (recorrido completo del ABB de n bicicletas).
-   * *Justificación:* Como el árbol está indexado por `bici_id` y no por kilometraje, es necesario visitar todos los nodos del ABB para verificar qué bicicletas superan el umbral ingresado.
+   * **Complejidad:** O(N) donde N es la cantidad total de bicicletas registradas en el árbol.
+   * **Justificación:** Se utilizó el Árbol Binario de Búsqueda (ABB) existente donde ya residen todas las bicicletas de la red ordenadas por su identificador (bici_id). Debido a que el árbol está indexado por ID y no por kilometraje, un recorrido en profundidad (In-Order) visita cada nodo exactamente una vez en tiempo lineal respecto al tamaño del árbol para filtrar aquellas que superan el kilometraje ingresado.
 4. **Cola de espera por estación:**
-   * *Complejidad:* O(1) para encolar y desencolar.
-   * *Justificación:* Se eligió una cola (FIFO) porque respeta estrictamente el orden de llegada de los usuarios cuando no hay bicicletas disponibles, garantizando operaciones en tiempo constante en ambos extremos.
+   * **Complejidad:** O(1) tanto para encolar un usuario en espera, como para asignarle una bicicleta al primero de la fila cuando se produce una devolución (desencolar).
+   * **Justificación:** Se implementó una clase Cola dado que esta estructura (FIFO - First In, First Out) es la ideal para gestionar filas de espera, porque garantiza que el primer usuario en anotarse sea el primero en recibir una bicicleta al producirse una devolución, resolviendo ambas operaciones en tiempo constante estricto O(1).
 5. **Cola de prioridad (Min-Heap) para el taller:**
-   * *Complejidad:* O(\log n) para insertar y O(\log n) para extraer la bicicleta más urgente.
-   * *Justificación:* El Min-Heap permite mantener siempre en la raíz la bicicleta con mayor urgencia (prioridad 1, incluyendo las eléctricas) sin necesidad de reordenar toda la colección en cada inserción o extracción.
+   * **Complejidad:** O(log N) tanto para insertar como para extraer la bicicleta más urgente.
+   * **Justificación:** Se implementó un Min-Heap sobre un arreglo dinámico porque permite mantener ordenados los elementos según su nivel de urgencia (1 máxima prioridad y las eléctricas tienen prioridad absoluta). Con el Heap se logra equilibrar el costo de inserción y extracción en tiempo logarítmico mediante los algoritmos de flotar.
 
 ### Módulo C: Árbol Binario de Búsqueda (ABB)
 * **¿Qué altura tendría el árbol si las bicicletas se cargaran ordenadas por ID? ¿Cómo afecta eso al costo de la búsqueda? (Ejemplo con 5 bicicletas):**
