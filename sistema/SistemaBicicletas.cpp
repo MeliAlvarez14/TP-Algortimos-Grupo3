@@ -193,83 +193,6 @@ void SistemaBicicletas::menorRecorridoPorCiclovia(string codOrigen, string codDe
 }
 
 
-void SistemaBicicletas::imprimirSubconjunto(const std::string* actual, int tamActual) const {
-    std::cout << "{";
-    for (int i = 0; i < tamActual; ++i) {
-        std::cout << actual[i];
-        if (i + 1 < tamActual) {
-            std::cout << ", ";
-        }
-    }
-    std::cout << "}\n";
-}
-
-void SistemaBicicletas::backtrack(
-    const EstacionFaltante* estaciones,
-    int n,
-    int indice,
-    int capacidadObjetivo,
-    int sumActual,
-    std::string* actual,
-    int tamActual,
-    int& cantidadSoluciones
-    ) const{
-        if (sumActual == capacidadObjetivo) {
-            imprimirSubconjunto(actual, tamActual);
-            cantidadSoluciones++;
-            return;
-        }
-
-        if (sumActual > capacidadObjetivo || indice == n) {
-            return;
-        }
-
-        if (estaciones[indice].faltante > 0 && sumActual + estaciones[indice].faltante <= capacidadObjetivo) {
-            actual[tamActual] = estaciones[indice].codigo;
-            backtrack(
-                estaciones,
-                n,
-                indice + 1,
-                capacidadObjetivo,
-                sumActual + estaciones[indice].faltante,
-                actual,
-                tamActual + 1,
-                cantidadSoluciones
-            );
-        }
-
-        backtrack(
-            estaciones,
-            n,
-            indice + 1,
-            capacidadObjetivo,
-            sumActual,
-            actual,
-            tamActual,
-            cantidadSoluciones
-        );
-    }
-    
-
-void SistemaBicicletas::redistribuirBicicletas(const EstacionFaltante* estaciones, int n, int capacidad) const {
-    if (estaciones == nullptr || n <= 0 || capacidad <= 0) {
-        std::cout << "No existen subconjuntos de estaciones cuyos faltantes sumen exactamente " << capacidad << endl;
-        return;
-    }
-
-    std::string* actual = new std::string[n];
-    int cantidadSoluciones = 0;
-
-    std::cout << "Soluciones para C = " << capacidad << ":\n";
-    backtrack(estaciones, n, 0, capacidad, 0, actual, 0, cantidadSoluciones);
-
-    if (cantidadSoluciones == 0) {
-        std::cout << "No existen subconjuntos de estaciones cuyos faltantes sumen exactamente " << capacidad << endl;
-    }
-
-    delete[] actual;
-}
-
 //Módulo B
 void SistemaBicicletas::cargarViajes(string rutaArchivo) {
     ifstream archivo(rutaArchivo);
@@ -472,4 +395,83 @@ void SistemaBicicletas::listarBicicletasConMasDeKm(int minKm) {
     // Tip: Agregar en ABB un método público listarConMasDeKm(int minKm)
     // que recorra recursivamente e imprima si nodo->obtenerBicicleta()->obtenerKilometros() > minKm
     // arbolBicicletas.listarConMasDeKm(minKm);
+}
+
+
+// Módulo D
+void SistemaBicicletas::imprimirSubconjunto(const std::string* actual, int tamActual) const {
+    std::cout << "{";
+    for (int i = 0; i < tamActual; ++i) {
+        std::cout << actual[i];
+        if (i + 1 < tamActual) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "}\n";
+}
+
+void SistemaBicicletas::backtrack(
+    const EstacionFaltante* estaciones,
+    int n,
+    int indice,
+    int capacidadObjetivo,
+    int sumActual,
+    std::string* actual,
+    int tamActual,
+    int& cantidadSoluciones
+    ) const{
+        if (sumActual == capacidadObjetivo) {
+            imprimirSubconjunto(actual, tamActual);
+            cantidadSoluciones++;
+            return;
+        }
+
+        if (sumActual > capacidadObjetivo || indice == n) {
+            return;
+        }
+
+        if (estaciones[indice].faltante > 0 && sumActual + estaciones[indice].faltante <= capacidadObjetivo) {
+            actual[tamActual] = estaciones[indice].codigo;
+            backtrack(
+                estaciones,
+                n,
+                indice + 1,
+                capacidadObjetivo,
+                sumActual + estaciones[indice].faltante,
+                actual,
+                tamActual + 1,
+                cantidadSoluciones
+            );
+        }
+
+        backtrack(
+            estaciones,
+            n,
+            indice + 1,
+            capacidadObjetivo,
+            sumActual,
+            actual,
+            tamActual,
+            cantidadSoluciones
+        );
+    }
+    
+
+void SistemaBicicletas::redistribuirBicicletas(const EstacionFaltante* estaciones, int n, int capacidad) const {
+    if (estaciones == nullptr || n <= 0 || capacidad <= 0) {
+        std::cout << "No existen subconjuntos de estaciones cuyos faltantes sumen exactamente " << capacidad << endl;
+        return;
+    }
+
+    std::string* actual = new std::string[n];
+    int cantidadSoluciones = 0;
+
+    std::cout << "Soluciones para C = " << capacidad << ":\n";
+    backtrack(estaciones, n, 0, capacidad, 0, actual, 0, cantidadSoluciones);
+
+    if (cantidadSoluciones == 0) {
+        std::cout << "No existen subconjuntos de estaciones cuyos faltantes sumen exactamente " << capacidad << endl;
+    }
+
+    delete[] actual;
 }

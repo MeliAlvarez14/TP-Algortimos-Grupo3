@@ -55,8 +55,6 @@ class SistemaBicicletas {
         void listarEstaciones(int opcion);
         void listarEstacionesConMenosOcupacion();
         void menorRecorridoPorCiclovia(std::string codOrigen, std::string codDestino);
-        void redistribuirBicicletas(const EstacionFaltante* estaciones, int n, int capacidad) const;
-        
         
         // --- Módulo B: Viajes
         void calcularViajesEstacionRango(std::string estacion, int fechaDesde, int fechaHasta);
@@ -74,6 +72,9 @@ class SistemaBicicletas {
         void mostrarCantidadAveriadas();
         void mostrarAlturaArbol();
         void eliminarBicicletaDelArbol(int id);
+
+        //--- Módulo D: Redistribución de Bicicletas ---
+        void redistribuirBicicletas(const EstacionFaltante* estaciones, int n, int capacidad) const;
 
 };
 
