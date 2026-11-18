@@ -190,6 +190,7 @@ void SistemaBicicletas::menorRecorridoPorCiclovia(string codOrigen, string codDe
     }
 
     estaciones.bfs(codOrigen, codDestino);
+    cout << "\n";
 }
 
 
