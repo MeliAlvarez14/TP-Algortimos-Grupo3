@@ -362,13 +362,36 @@ void SistemaBicicletas::cargarBicicletas(string rutaArchivo) {
 }
 
 void SistemaBicicletas::registrarBicicleta(int id, string estacion, string tipo, string estado, int km) {
+    // Validar ID (por si se llama al método desde otro lado fuera del menú)
     if (arbolBicicletas.buscar(id) != nullptr) {
         cout << "Error: Ya existe una bicicleta con el ID " << id << "." << endl;
         return;
     }
 
+    // Validar existencia de la estación
+    Vertice<Estacion, string>* verticeEstacion = estaciones.obtenerVertice(estacion);
+    if (verticeEstacion == nullptr) {
+        cout << "Error: La estacion '" << estacion << "' no existe." << endl;
+        return;
+    }
+
+    // Validar capacidad de anclajes (referencia & para modificar la estación real en el grafo)
+    Estacion& estacionBici = verticeEstacion->obtenerDato();
+    if (estacionBici.getBicisDisponibles() >= estacionBici.getCapacidadAnclajes()) {
+        cout << "Error: La estacion " << estacion << " no tiene anclajes libres ("
+             << estacionBici.getBicisDisponibles() << "/" << estacionBici.getCapacidadAnclajes() << ")." << endl;
+        return;
+    }
+
     Bicicleta* nueva = new Bicicleta(id, estacion, tipo, estado, km);
     arbolBicicletas.insertar(id, nueva);
+    estacionBici.setBicisDisponibles(estacionBici.getBicisDisponibles() + 1);
+
+    if (estado == "Averiada") {
+        int prioridad = (tipo == "Electrica") ? 1 : 2;
+        tallerReparaciones.insertar(nueva, prioridad);
+    }
+    
     cout << "Bicicleta " << id << " registrada exitosamente." << endl;
 }
 

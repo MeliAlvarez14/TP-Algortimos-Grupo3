@@ -98,6 +98,11 @@ void mostrarMenuBicicletas(SistemaBicicletas& sistema) {
                 string estacion, tipo, estado;
                 cout << "ID de bicicleta: ";
                 cin >> id;
+                if (sistema.buscarBicicletaPorId(id) != nullptr) {
+                    cout << "Error: Ya existe una bicicleta con el ID " << id << "." << endl;
+                    break;
+                }
+
                 cout << "Codigo de estacion (ej. PLZ): ";
                 cin >> estacion;
                 cout << "Tipo (Mecanica / Electrica): ";
@@ -106,6 +111,7 @@ void mostrarMenuBicicletas(SistemaBicicletas& sistema) {
                 cin >> estado;
                 cout << "Kilometros iniciales: ";
                 cin >> km;
+
                 sistema.registrarBicicleta(id, estacion, tipo, estado, km);
                 break;
             }
