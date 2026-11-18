@@ -3,13 +3,12 @@
 #include <fstream>
 #include "Estacion.h"
 #include "Vertice.h"
+#include "Lista.h"
 
 using namespace std;
 
 SistemaBicicletas::SistemaBicicletas() : estaciones(101) {
     // Los constructores de ABB y demás estructuras se ejecutan automáticamente
-    primerViaje = nullptr;
-    cantidadViajes = 0;
 }
 
 void SistemaBicicletas::inicializarSistema() {
@@ -208,26 +207,21 @@ void SistemaBicicletas::cargarViajes(string rutaArchivo) {
     while (archivo >> idViaje >> idBici >> dniUsuario >> estacionOrigen >> estacionDestino >> fecha >> duracionMin) {
         Viaje nuevoViaje(idViaje, idBici, dniUsuario, estacionOrigen, estacionDestino, fecha, duracionMin);
         
-        //Creacion nodo y se inserta al principio de la lista enlazada (manualmente)
-        Nodo<Viaje>* nuevoNodo = new Nodo<Viaje>(nuevoViaje);
-        nuevoNodo->cambiarSiguiente(primerViaje);
-        primerViaje = nuevoNodo;
-        cantidadViajes++;
+        // Delegamos la inserción y el manejo de nodos en la Lista genérica
+        listaViajes.insertar(nuevoViaje);
     }
 
     archivo.close();
-    cout << "Viajes cargados correctamente en lista enlazada. Total: " << cantidadViajes << endl;
+    cout << "Viajes cargados correctamente en lista genérica. Total: " << listaViajes.obtenerCantidad() << endl;
 }
 
 void SistemaBicicletas::calcularViajesEstacionRango(string estacionBuscada, int fechaDesde, int fechaHasta) {
     int contador = 0;
-    Nodo<Viaje>* actual = primerViaje;
+    Nodo<Viaje>* actual = listaViajes.obtenerPrimero();
 
     while (actual != nullptr) {
-        // Obtener Viaje guardado en el nodo
         Viaje viajeActual = actual->obtenerDato();
         
-        // Usar el método ya hecho de Viaje
         if (viajeActual.salioDeEstacionEnRango(estacionBuscada, fechaDesde, fechaHasta)) {
             contador++;
         }
@@ -241,10 +235,9 @@ void SistemaBicicletas::calcularViajesEstacionRango(string estacionBuscada, int 
 
 void SistemaBicicletas::buscarViajesUsuario(std::string dni){
     int minutos = 0;
-    Nodo<Viaje>* actual = primerViaje;
+    Nodo<Viaje>* actual = listaViajes.obtenerPrimero();
 
     while (actual != nullptr) {
-        // Obtener Viaje guardado en el nodo
         Viaje viajeActual = actual->obtenerDato();
         
         if(viajeActual.perteneceAUsuario(dni)){

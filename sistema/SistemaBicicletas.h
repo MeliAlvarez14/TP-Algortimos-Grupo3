@@ -7,8 +7,9 @@
 #include "Viaje.h"
 #include "Grafo.h"
 #include "Estacion.h"
-#include "Nodo.h"
+#include "Viaje.h"
 #include "TallerHeap.h"
+#include "Lista.h"
 
 struct EstacionFaltante {
     std::string codigo;
@@ -20,9 +21,7 @@ class SistemaBicicletas {
         ABB arbolBicicletas;
         Grafo<std::string, Estacion> estaciones;
         TallerHeap tallerReparaciones;
-
-        Nodo<Viaje>* primerViaje;
-        int cantidadViajes;
+        Lista<Viaje> listaViajes;
 
         void cargarBicicletas(std::string rutaArchivo);
         void cargarEstaciones(std::string rutaArchivo);
