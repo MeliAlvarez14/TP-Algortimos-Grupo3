@@ -348,6 +348,9 @@ void SistemaBicicletas::cargarBicicletas(string rutaArchivo) {
 
     while (archivo >> id >> estacion >> tipo >> estado >> km) {
         Bicicleta* nuevaBici = new Bicicleta(id, estacion, tipo, estado, km);
+        if (arbolBicicletas.buscar(id) != nullptr) {
+            continue;
+        }
         arbolBicicletas.insertar(id, nuevaBici);
 
         // CONEXIÓN CON MÓDULO B.5 (Taller / Min-Heap):
@@ -433,8 +436,22 @@ void SistemaBicicletas::eliminarBicicletaDelArbol(int id) {
         return;
     }
 
+    if (bici->obtenerEstado() == "Averiada") {
+        cout << "Error: No se puede eliminar la bicicleta " << id << " porque esta en el taller de reparaciones." << endl;
+        return;
+    }
+
+    // Decrementar la cantidad de bicis en su estación actual (si la estación existe)
+    string codEstacion = bici->obtenerEstacion();
+    Vertice<Estacion, string>* verticeEstacion = estaciones.obtenerVertice(codEstacion);
+    if (verticeEstacion != nullptr) {
+        Estacion& estacion = verticeEstacion->obtenerDato();
+        if (estacion.getBicisDisponibles() > 0) {
+            estacion.setBicisDisponibles(estacion.getBicisDisponibles() - 1);
+        }
+    }
+
     arbolBicicletas.eliminar(id);
-    delete bici; // Liberamos la instancia si ya no se va a usar en ningún otro lado
     cout << "Bicicleta " << id << " eliminada del sistema." << endl;
 }
 

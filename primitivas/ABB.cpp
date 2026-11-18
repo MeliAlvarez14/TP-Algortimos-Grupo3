@@ -85,10 +85,10 @@ int ABB::calcularAlturaRecursivo(NodoArbol* nodo) {
 
 void ABB::liberarRecursivo(NodoArbol* nodo) {
     if (nodo != nullptr) {
-        liberarRecursivo(nodo->obtenerIzquierdo()); // 1. Liberar subarbol izquierdo
-        liberarRecursivo(nodo->obtenerDerecho());   // 2. Liberar subarbol derecho
+        liberarRecursivo(nodo->obtenerIzquierdo()); // Liberar subarbol izquierdo
+        liberarRecursivo(nodo->obtenerDerecho());   // Liberar subarbol derecho
         delete nodo->obtenerBicicleta();            // Liberar la bicicleta asociada al nodo
-        delete nodo;                               // 3. Borrar la raiz (Postorder)
+        delete nodo;                               // Borrar la raiz (Postorder)
     }
 }
 
@@ -114,7 +114,7 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
         return nullptr;
     }
 
-    // 1. Buscamos el nodo
+    // Buscamos el nodo
     if (clave < nodo->obtenerClave()) {
         nodo->cambiarIzquierdo(eliminarRecursivo(nodo->obtenerIzquierdo(), clave));
     } 
@@ -126,20 +126,23 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
 
         // --- CASO 1: Nodo HOJA (sin hijos) ---
         if (nodo->obtenerIzquierdo() == nullptr && nodo->obtenerDerecho() == nullptr) {
+            delete nodo->obtenerBicicleta();
             delete nodo;
             return nullptr; // Devuelve nullptr para actualizar la referencia en el padre
         }
 
         // --- CASO 2: Nodo con UN SOLO HIJO ---
-        // Subcaso 2.1: Solo tiene hijo derecho
+        // Solo tiene hijo derecho
         else if (nodo->obtenerIzquierdo() == nullptr) {
             NodoArbol* temp = nodo->obtenerDerecho(); // Guardamos el subarbol derecho
+            delete nodo->obtenerBicicleta();
             delete nodo; // Liberamos el nodo actual
             return temp; // El hijo derecho toma el lugar del nodo borrado
         }
-        // Subcaso 2.2: Solo tiene hijo izquierdo
+        // Solo tiene hijo izquierdo
         else if (nodo->obtenerDerecho() == nullptr) {
             NodoArbol* temp = nodo->obtenerIzquierdo(); // Guardamos el subarbol izquierdo
+            delete nodo->obtenerBicicleta();
             delete nodo; // Liberamos el nodo actual
             return temp; // El hijo izquierdo toma el lugar del nodo borrado
         }
@@ -147,23 +150,26 @@ NodoArbol* ABB::eliminarRecursivo(NodoArbol* nodo, int clave) {
         // --- CASO 3: Nodo con DOS HIJOS ---
         else {
             NodoArbol* sucesor = obtenerMinimo(nodo->obtenerDerecho());
+            
+            // Liberamos la bicicleta del nodo que queremos eliminar
+            delete nodo->obtenerBicicleta();
 
-            // Borramos el sucesor de su posición original
-            NodoArbol* nuevoDerecho = eliminarRecursivo(nodo->obtenerDerecho(), sucesor->obtenerClave());
+            //Transferimos la clave y el puntero de bicicleta del sucesor al nodo actual
+            nodo->cambiarClave(sucesor->obtenerClave());
+            nodo->cambiarBicicleta(sucesor->obtenerBicicleta());
 
-            // Le asignamos al sucesor los hijos del nodo que vamos a borrar
-            sucesor->cambiarIzquierdo(nodo->obtenerIzquierdo());
-            sucesor->cambiarDerecho(nuevoDerecho);
+            //Desvinculamos la bicicleta del sucesor antes de borrarlo para que el Caso 1/2 no la libere
+            sucesor->cambiarBicicleta(nullptr);
 
-            delete nodo;
-            return sucesor;
+            // Eliminamos el nodo sucesor del subárbol derecho (cae en Caso 1 o Caso 2)
+            nodo->cambiarDerecho(eliminarRecursivo(nodo->obtenerDerecho(), sucesor->obtenerClave()));
         }
     }
     return nodo;
 }
 
 //Módulo B.3
-void ABB::listarConMasDeKm(int minKm) { //método publico que usa el recursivo privado
+void ABB::listarConMasDeKm(int minKm) {
     listarConMasDeKmRecursivo(this->raiz, minKm);
 }
 

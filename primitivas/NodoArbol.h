@@ -18,6 +18,8 @@ public:
     NodoArbol* obtenerIzquierdo();
     NodoArbol* obtenerDerecho();
 
+    void cambiarClave(int nuevaClave);
+    void cambiarBicicleta(Bicicleta* nuevaBici);
     void cambiarIzquierdo(NodoArbol* izq);
     void cambiarDerecho(NodoArbol* der);
 };

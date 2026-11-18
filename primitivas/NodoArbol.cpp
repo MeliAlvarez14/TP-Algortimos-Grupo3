@@ -24,6 +24,14 @@ NodoArbol* NodoArbol::obtenerDerecho(){
     return derecho; 
 }
 
+void NodoArbol::cambiarClave(int nuevaClave) {
+    clave = nuevaClave;
+}
+
+void NodoArbol::cambiarBicicleta(Bicicleta* nuevaBici) {
+    bicicleta = nuevaBici;
+}
+
 void NodoArbol::cambiarIzquierdo(NodoArbol* izq){ 
     izquierdo = izq; 
 }
