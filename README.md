@@ -76,3 +76,9 @@ g++ -std=c++17 -Wall -Wextra -I../clases -I../primitivas main.cpp SistemaBicicle
     * **Búsqueda (O(2ⁿ))** Para cada una de las `n` estaciones, el algoritmo toma una decisión binaria (incluir la estación en el recorrido del camión o descartarla). Esto genera un árbol binario de profundidad máxima `n`, el cual posee `2ⁿ` nodos hoja y 2<sup>n+1</sup> - 1 nodos en total. En el peor caso —por ejemplo, cuando la capacidad `C` es igual o mayor a la suma total de todos los faltantes—, las podas por exceso de capacidad (suma_actual + faltante <= C) no logran descartar ramas de forma temprana y se recorre el árbol completo.
     * **Solución (O(n))**: Cada vez que se alcanza una combinación válida (suma_actual == C), se recorre e imprime el arreglo auxiliar actual con las estaciones seleccionadas. Dado que un subconjunto puede contener como máximo `n` estaciones, esta operación tiene un costo lineal de `O(n)`.
     * **Conclusión**: Multiplicando la cantidad máxima de combinaciones posibles en las hojas (`2ⁿ`) por el costo de procesar e imprimir cada subconjunto válido (`O(n)`), la complejidad temporal resultante en el peor caso es `O(n · 2ⁿ)`.
+
+
+## Integrantes👩‍💻👩‍💻👨‍💻
+- Marquez Alina
+- Alvarez Melina
+- Gonzalez Cristian
